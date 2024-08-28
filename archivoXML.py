@@ -1,5 +1,6 @@
 import xml.etree.ElementTree as ET
 from globales import lista_circular
+from Listas.Matriz import Matriz
 
 class archivoXML:
     def leerArchivo(self, entrada):
@@ -7,10 +8,20 @@ class archivoXML:
         ramas = arbol.getroot()
 
         for i in ramas.iter('matriz'):
-            matriz = [[0 for _ in range(int(i.get('m')))] for _ in range(int(i.get('n')))]
+            filas = int(i.get('m'))
+            columnas = int(i.get('n'))
+            matriz = Matriz(filas, columnas) 
+
             for j in i.iter('dato'):
-                matriz[int(j.get('x')) - 1][int(j.get('y')) - 1] = int(j.text)
-            lista_circular.agregarNodo(i.get('nombre'), matriz, int(i.get('m')), int(i.get('n')))
+                x = int(j.get('x'))
+                y = int(j.get('y'))
+                dato = int(j.text)
+
+                matriz.asignar_elemento(x, y, dato)
+
+            matriz.mostrar()
+            lista_circular.agregarNodo(i.get('nombre'), matriz, filas, columnas)
+
 
     def escribirArchivo(self, rutaSalida, archivoProcesado):
         arbol = ET.Element("matrices")
@@ -32,7 +43,6 @@ class archivoXML:
         print ("> Calculando la matriz binaria...")
         lista_circular.obtener_lista_binaria()
         print ("> Realizando suma de tuplas...")
-        lista_circular.obtener_suma_tuplas()
         print ("> Archivo procesado exitosamente.")
 
     def indentar(self, elemento, nivel=0, horizontal='\t', vertical='\n'):

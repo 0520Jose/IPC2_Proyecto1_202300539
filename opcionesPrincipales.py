@@ -65,7 +65,6 @@ class opcionesPrincipales:
         print ("")
         print ("")
 
-
     def generarGrafica(self):
         return
 

@@ -8,17 +8,16 @@ class archivoXML:
         ramas = arbol.getroot()
 
         for i in ramas.iter('matriz'):
-            filas = int(i.get('m'))
-            columnas = int(i.get('n'))
+            filas = int(i.get('m')) - 1
+            columnas = int(i.get('n')) - 1
             matriz = Matriz(filas, columnas) 
 
             for j in i.iter('dato'):
-                x = int(j.get('x'))
-                y = int(j.get('y'))
+                x = int(j.get('x')) - 1
+                y = int(j.get('y')) - 1 
                 dato = int(j.text)
 
                 matriz.asignar_elemento(x, y, dato)
-
             matriz.mostrar()
             lista_circular.agregarNodo(i.get('nombre'), matriz, filas, columnas)
 
@@ -41,8 +40,9 @@ class archivoXML:
     def procesarArchivo(self):
         print ("> Procesando archivo...")
         print ("> Calculando la matriz binaria...")
-        lista_circular.obtener_lista_binaria()
+        lista_binaria = lista_circular.obtener_lista_binaria()
         print ("> Realizando suma de tuplas...")
+        lista_binaria.obtener_suma_tuplas()
         print ("> Archivo procesado exitosamente.")
 
     def indentar(self, elemento, nivel=0, horizontal='\t', vertical='\n'):

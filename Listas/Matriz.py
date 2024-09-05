@@ -1,5 +1,4 @@
-from Listas.Nodo import Nodo
-from Listas.Cola import Cola
+from Listas.Nodo import Nodo_matriz as Nodo
 class Matriz:
     def __init__(self, filas, columnas):
         self.filas = filas
@@ -49,14 +48,3 @@ class Matriz:
     def asignar_elemento(self, i, j, valor):
         nodo = self.obtener_nodo(i, j)
         nodo.valor = valor
-
-    def mostrar(self):
-        nodo_fila = self.inicio
-        while nodo_fila:
-            nodo_actual = nodo_fila
-            fila = []
-            while nodo_actual:
-                fila.append(str(nodo_actual.valor))
-                nodo_actual = nodo_actual.derecha
-            print(" ".join(fila))
-            nodo_fila = nodo_fila.abajo

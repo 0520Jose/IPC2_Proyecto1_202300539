@@ -18,7 +18,6 @@ class archivoXML:
                 dato = int(j.text)
 
                 matriz.asignar_elemento(x, y, dato)
-            matriz.mostrar()
             lista_circular.agregarNodo(i.get('nombre'), matriz, filas, columnas)
 
 
@@ -41,9 +40,17 @@ class archivoXML:
         print ("> Procesando archivo...")
         print ("> Calculando la matriz binaria...")
         lista_binaria = lista_circular.obtener_lista_binaria()
-        print ("> Realizando suma de tuplas...")
-        lista_binaria.obtener_suma_tuplas()
-        print ("> Archivo procesado exitosamente.")
+        while not lista_binaria == None:
+            nodo_actual = lista_circular.inicio
+            lista_de_colas = lista_circular.obtener_colas(nodo_actual)
+            lista_respaldo = lista_circular.obtener_colas(nodo_actual)
+            print ("> Realizando suma de tuplas...")
+            lista_binaria.obtener_suma_tuplas(lista_de_colas, lista_respaldo)
+                
+            nodo_actual = nodo_actual.siguiente
+                
+            if nodo_actual == lista_circular.inicio:
+                break
 
     def indentar(self, elemento, nivel=0, horizontal='\t', vertical='\n'):
         i = vertical + nivel * horizontal

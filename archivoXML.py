@@ -1,5 +1,6 @@
 import xml.etree.ElementTree as ET
 from globales import lista_circular
+from Listas.Matriz import Matriz
 
 class archivoXML:
     def leerArchivo(self, entrada):
@@ -7,10 +8,18 @@ class archivoXML:
         ramas = arbol.getroot()
 
         for i in ramas.iter('matriz'):
-            matriz = [[0 for _ in range(int(i.get('m')))] for _ in range(int(i.get('n')))]
+            filas = int(i.get('m')) - 1
+            columnas = int(i.get('n')) - 1
+            matriz = Matriz(filas, columnas) 
+
             for j in i.iter('dato'):
-                matriz[int(j.get('x')) - 1][int(j.get('y')) - 1] = int(j.text)
-            lista_circular.agregarNodo(i.get('nombre'), matriz, int(i.get('m')), int(i.get('n')))
+                x = int(j.get('x')) - 1
+                y = int(j.get('y')) - 1 
+                dato = int(j.text)
+
+                matriz.asignar_elemento(x, y, dato)
+            lista_circular.agregarNodo(i.get('nombre'), matriz, filas, columnas)
+
 
     def escribirArchivo(self, rutaSalida, archivoProcesado):
         arbol = ET.Element("matrices")
@@ -30,10 +39,18 @@ class archivoXML:
     def procesarArchivo(self):
         print ("> Procesando archivo...")
         print ("> Calculando la matriz binaria...")
-        lista_circular.obtener_lista_binaria()
-        print ("> Realizando suma de tuplas...")
-        lista_circular.obtener_suma_tuplas()
-        print ("> Archivo procesado exitosamente.")
+        lista_binaria = lista_circular.obtener_lista_binaria()
+        while not lista_binaria == None:
+            nodo_actual = lista_circular.inicio
+            lista_de_colas = lista_circular.obtener_colas(nodo_actual)
+            lista_respaldo = lista_circular.obtener_colas(nodo_actual)
+            print ("> Realizando suma de tuplas...")
+            lista_binaria.obtener_suma_tuplas(lista_de_colas, lista_respaldo)
+                
+            nodo_actual = nodo_actual.siguiente
+                
+            if nodo_actual == lista_circular.inicio:
+                break
 
     def indentar(self, elemento, nivel=0, horizontal='\t', vertical='\n'):
         i = vertical + nivel * horizontal

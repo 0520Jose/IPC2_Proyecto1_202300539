@@ -1,9 +1,12 @@
 from archivoXML import archivoXML
+from graficar import Reportes
+from ListaCircular.ListaCircular import ListaCircular
 class opcionesPrincipales:
     def __init__(self):
         self.archivo = archivoXML()
         self.archivoLeido = None
         self.archivoProcesado = None
+        self.lista_reducida = None
 
     def cargarArchivo(self):
         print ("----------------------------------------------------")
@@ -31,11 +34,11 @@ class opcionesPrincipales:
         print ("----------------------------------------------------")
         print ("")
         print ("> Procesando archivo...")
-        self.archivo.procesarArchivo()
+        lista_reducida = self.archivo.procesarArchivo()
         if self.archivoProcesado == None:
             print ("> Archivo procesado exitosamente.")
             print ("")
-            return
+            return lista_reducida
         else: 
             self.procesarArchivo()
 
@@ -47,7 +50,7 @@ class opcionesPrincipales:
         rutaSalida = input("> Ingresar una ruta especifica: ")
         print ("> Escribiendo archivo...")
         archivo = archivoXML()
-        archivo.escribirArchivo(rutaSalida, self.archivoProcesado)
+        archivo.escribirArchivo(rutaSalida, self.lista_reducida)
         print ("> Archivo escrito exitosamente.")
 
     def mostrarDatosEstudiante(self):
@@ -66,7 +69,16 @@ class opcionesPrincipales:
         print ("")
 
     def generarGrafica(self):
-        return
+        print ("----------------------------------------------------")
+        print ("              Opcion Generar gráfica")
+        print ("----------------------------------------------------")
+        print ("")
+        self.lista_reducida.imprimir_lista()
+        Reportes.graficar(self.lista_reducida)
+        print ("> Gráfica generada exitosamente.")
+        print ("")
+        print ("")
+        
 
     def menuPrincipal(self):
         while True:
@@ -88,7 +100,7 @@ class opcionesPrincipales:
             if eleccion == 1:
                 self.cargarArchivo()
             elif eleccion == 2:
-                self.procesarArchivo()
+                self.lista_reducida = self.procesarArchivo()
             elif eleccion == 3:
                 self.escribirArchivo()
             elif eleccion == 4:

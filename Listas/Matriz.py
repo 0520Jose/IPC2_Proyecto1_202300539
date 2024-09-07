@@ -48,3 +48,13 @@ class Matriz:
     def asignar_elemento(self, i, j, valor):
         nodo = self.obtener_nodo(i, j)
         nodo.valor = valor
+
+    def imprimir_matriz(self):
+        nodo_actual = self.inicio
+        while nodo_actual:
+            nodo_superior = nodo_actual
+            while nodo_superior:
+                print(nodo_superior.valor, end=" ")
+                nodo_superior = nodo_superior.derecha
+            print()
+            nodo_actual = nodo_actual.abajo

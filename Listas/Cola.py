@@ -1,14 +1,15 @@
 from Listas.Nodo_cola import Nodo
 
 class Cola:
-    def __init__ (self, posicion, inicio = None, fin = None, tamaño = 0):
+    def __init__ (self, posicion, dimension, inicio = None, fin = None, tamaño = 0):
         self.inicio = inicio
         self.fin = fin
         self.tamaño = tamaño
         self.posicion = posicion
+        self.dimension = dimension
 
-    def encolar(self, dato):
-        nuevoNodo = Nodo(dato)
+    def encolar(self, dato, nombre):
+        nuevoNodo = Nodo(dato, nombre)
         if self.tamaño == 0:
             self.inicio = nuevoNodo
             self.fin = nuevoNodo

@@ -44,36 +44,60 @@ class ListaCircular:
                     else:
                         matrizBinaria.asignar_elemento(i, j, 0)
 
-            lista_circular_aux.agregarNodo("MatrizBinaria", matrizBinaria, nodoAux.m, nodoAux.n)
+            lista_circular_aux.agregarNodo(nodoAux.nombre, matrizBinaria, nodoAux.m, nodoAux.n)
 
             lista_circular_aux.tamaño += 1
             nodoAux = nodoAux.siguiente
             if nodoAux == self.inicio:
-                lista_circular_aux.tamaño += 1
                 break
 
         return lista_circular_aux
+    
+    def cola_de_colas_a_matriz(self, cola_de_colas):
+        if cola_de_colas.tamaño == 0:
+            print("> No hay colas en la cola de colas.")
+            return
+        
+        m = cola_de_colas.dimension - 1
+        n = cola_de_colas.tamaño - 1 
+        print(f"Matriz de {n}x{m}")
+
+        nueva_matriz = Matriz(n, m)
+        fila = 0
+
+        while not cola_de_colas.esta_vacia():
+            cola_fila = cola_de_colas.desencolar()
+            columna = 0
+
+            while not cola_fila.esta_vacia():
+                dato = cola_fila.desencolar()
+                if fila <= n and columna <= m:
+                    nueva_matriz.asignar_elemento(fila, columna, dato)
+                columna += 1
+            fila += 1
+
+        return nueva_matriz
     
     def obtener_colas(self, nodo_actual):
         if self.tamaño == 0:
             print("> No hay nodos en la lista.")
             return
         
-        cola_de_colas = Cola(0)
-        
         nodoAux = nodo_actual.matriz
         columna = nodo_actual.m + 1
         fila = nodo_actual.n + 1
+
+        cola_de_colas = Cola(0, columna)
             
         for i in range(fila):
-            cola = Cola(i)
+            cola = Cola(i, fila)
                 
             for j in range(columna):
                 dato = nodoAux.obtener_elemento(i, j)
-                cola.encolar(dato)
+                cola.encolar(dato, nodo_actual.nombre)
                 
             if cola.tamaño == (fila):
-                cola_de_colas.encolar(cola)
+                cola_de_colas.encolar(cola, nodo_actual.nombre)
             else:
                 print("La cola de la fila no tiene exactamente.")
         return cola_de_colas
@@ -82,22 +106,28 @@ class ListaCircular:
         while not self == None:
             nodo_actual = self.inicio
             cola_de_colas = self.obtener_colas(nodo_actual)
-            self.compararColas(cola_de_colas, colas_originales, colas_respaldo)
+            colas_reducidas = self.compararColas(cola_de_colas, colas_originales, colas_respaldo)
             nodo_actual = nodo_actual.siguiente
                 
             if nodo_actual == self.inicio:
                 break
         
+        matriz = self.cola_de_colas_a_matriz(colas_reducidas)
+        lista_circular_reducida = ListaCircular()
+        lista_circular_reducida.agregarNodo("MatrizR", matriz, matriz.filas, matriz.columnas)
+        
+        return lista_circular_reducida
+        
         
 
     def compararColas(self, cola_de_colas, colas_originales, colas_respaldo):
-        colas_reducidas = Cola(0)
+        colas_reducidas = Cola(0, cola_de_colas.dimension)
         colas_respaldo.imprimirCola_de_colas()
         colas_originales.imprimirCola_de_colas()
         cola_de_colas.imprimirCola_de_colas()
         while not cola_de_colas.esta_vacia():
             cola_actual = cola_de_colas.desencolar()
-            cola_temporal = Cola(0)
+            cola_temporal = Cola(0,0)
             
             while not cola_de_colas.esta_vacia():
                 cola_comparar = cola_de_colas.desencolar()
@@ -106,8 +136,8 @@ class ListaCircular:
                         resultado = self.compararNodos(cola_actual, cola_comparar)
                         if resultado:
                             print ("Entro")
-                            cola_sumatoria = Cola(0)
-                            cola_suma = Cola(0)
+                            cola_sumatoria = Cola(0,0)
+                            cola_suma = Cola(0, cola_actual.tamaño)
 
                             while not colas_originales.esta_vacia():
                                 print("Entro")
@@ -115,32 +145,35 @@ class ListaCircular:
 
                                 if cola_original.posicion == cola_actual.posicion or cola_original.posicion == cola_comparar.posicion:
                                     print("Entro")
-                                    cola_sumatoria.encolar(cola_original)
+                                    cola_sumatoria.encolar(cola_original, "Original")
 
                             while not cola_sumatoria.esta_vacia():
                                 print("Entro")
                                 cola1 = cola_sumatoria.desencolar()
                                 cola2 = cola_sumatoria.desencolar()
+                                contador = 0
                                 if cola1 is not None and cola2 is not None:
                                     while not (cola1.esta_vacia() or cola2.esta_vacia()):
                                         print("Entro")
                                         dato1 = cola1.desencolar()
                                         dato2 = cola2.desencolar()
                                         suma = dato1 + dato2
-                                        cola_suma.encolar(suma)
+                                        contador += 1
+                                        cola_suma.encolar(suma, str(contador))
                                     cola_suma.imprimirCola()
-                                    colas_reducidas.encolar(cola_suma)
+                                    colas_reducidas.encolar(cola_suma, "reducida")
                                     colas_originales = colas_respaldo
                                     colas_originales.imprimirCola_de_colas()
 
                                 else:
                                     print("Una de las colas es None.")
-                    cola_temporal.encolar(cola_comparar)
+                    cola_temporal.encolar(cola_comparar, "Temporal")
 
             while not cola_temporal.esta_vacia():
                 encolar = cola_temporal.desencolar()
-                cola_de_colas.encolar(encolar)
+                cola_de_colas.encolar(encolar, "Cola de colas")
         print ("Fin de la comparación.")
+        return colas_reducidas
 
     def compararNodos(self, cola_actual, cola_comparar):
         nodo_actual = cola_actual.inicio
@@ -159,4 +192,17 @@ class ListaCircular:
         else:
             print("Las colas no son iguales o tienen diferente longitud.")
             return
+        
+    def imprimir_lista(self):
+        if self.tamaño == 0:
+            print("> No hay nodos en la lista.")
+            return
+
+        nodoAux = self.inicio
+        while True:
+            print(f"Nombre: {nodoAux.nombre}")
+            nodoAux.matriz.imprimir_matriz()
+            nodoAux = nodoAux.siguiente
+            if nodoAux == self.inicio:
+                break
 

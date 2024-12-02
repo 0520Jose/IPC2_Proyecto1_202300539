@@ -1,10 +1,40 @@
 from procceso import fila
+import xml.etree.ElementTree as ET
+ 
+datoAnterior = 0
 
-fila = fila()
-fila.agregar(1)
-fila.agregar(2)
-fila.agregar(3)
 
-while fila.tamaño > 0:
-    print(fila.sacar())
-    fila.tamaño -= 1
+def leerArchivo(entrada):
+    global datoAnterior
+    arbol = ET.parse(entrada)
+    ramas = arbol.getroot()
+    for matriz in ramas.iter('matriz'):
+        filas = int(matriz.get('m'))
+        columnas = int(matriz.get('n'))
+        matriz_ = fila()
+        for dato in matriz.iter('dato'):
+            x = int(dato.get('x'))
+            y = int(dato.get('y'))
+            dato_ = int(dato.text)
+            if datoAnterior == x: 
+                fila1.agregar(dato_, x, y)
+            else:
+                if fila1 != None:
+                    matriz_.agregar(fila1, 0, 0)
+                fila1 = fila()
+                datoAnterior += 1
+               
+        
+
+leerArchivo("entrada_.xml")
+        
+                              
+
+
+
+
+
+
+
+
+

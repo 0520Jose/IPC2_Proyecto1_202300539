@@ -1,7 +1,9 @@
 class nodo:
-    def __init__ (self, dato):
+    def __init__ (self, dato, x, y):
         self.dato = dato
-        self.anterior = None
+        self.siguiente = None
+        self.x = None
+        self.y = None
 
 class fila:
     def __init__ (self):
@@ -9,14 +11,14 @@ class fila:
         self.fin = None
         self.tamaño = 0
     
-    def agregar(self, dato):
-        nuevoNodo = nodo(dato)
+    def agregar(self, dato, x, y):
+        nuevoNodo = nodo(dato, x, y)
         if self.inicio == None:
             self.inicio = nuevoNodo
             self.fin = nuevoNodo
         else:
             nodoActual = self.fin
-            nuevoNodo.anterior = nodoActual
+            nodoActual.siguiente = nuevoNodo
             self.fin = nuevoNodo
         self.tamaño += 1
     
@@ -24,10 +26,17 @@ class fila:
         if self.inicio == None:
             return None
         else:
+            nodoAux = self.inicio.siguiente
             nodoActual = self.inicio
-            self.inicio = nodoActual.anterior
+            self.inicio = nodoAux
             return nodoActual.dato
 
+    def imprimir(self):
+        nodoActual = self.inicio
+        while nodoActual != None:
+            print(nodoActual.dato)
+            nodoActual = nodoActual.siguiente
+          
 
 
 

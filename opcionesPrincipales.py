@@ -39,7 +39,7 @@ class opcionesPrincipales:
             print ("> Archivo procesado exitosamente.")
             print ("")
             return lista_reducida
-        else: 
+        else:
             self.procesarArchivo()
 
     def escribirArchivo(self):

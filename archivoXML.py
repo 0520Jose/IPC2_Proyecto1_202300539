@@ -9,8 +9,8 @@ class archivoXML:
         ramas = arbol.getroot()
 
         for i in ramas.iter('matriz'):
-            filas = int(i.get('m')) - 1
-            columnas = int(i.get('n')) - 1
+            filas = int(i.get('n')) - 1
+            columnas = int(i.get('m')) - 1
             matriz = Matriz(filas, columnas) 
 
             for j in i.iter('dato'):
@@ -20,6 +20,7 @@ class archivoXML:
 
                 matriz.asignar_elemento(x, y, dato)
             lista_circular.agregarNodo(i.get('nombre'), matriz, filas, columnas)
+            lista_circular.imprimir_lista()
 
 
     def escribirArchivo(self, rutaSalida, archivoProcesado):
@@ -31,7 +32,7 @@ class archivoXML:
         
         while nodo_actual is not None and contador < max_iteraciones:
             matriz_elem = ET.SubElement(root, "matriz")
-            matriz_elem.set("nombre", nodo_actual.nombre)
+            matriz_elem.set("nombre", nodo_actual.nombre)          
             matriz_elem.set("n", str(nodo_actual.m + 1))
             matriz_elem.set("m", str(nodo_actual.n + 1))
             
@@ -68,7 +69,8 @@ class archivoXML:
         print ("> Procesando archivo...")
         print ("> Calculando la matriz binaria...")
         lista_binaria = lista_circular.obtener_lista_binaria()
-        while not lista_binaria == None:
+        lista_binaria.imprimir_lista()
+        while lista_binaria is None:
             nodo_actual = lista_circular.inicio
             lista_de_colas = lista_circular.obtener_colas(nodo_actual)
             lista_respaldo = lista_circular.obtener_colas(nodo_actual)
@@ -79,7 +81,7 @@ class archivoXML:
                 
             if nodo_actual == lista_circular.inicio:
                 break
-        return lista_reducida
+        return lista_circular
 
     def indentar(self, elemento, nivel=0, horizontal='\t', vertical='\n'):
         i = vertical + nivel * horizontal

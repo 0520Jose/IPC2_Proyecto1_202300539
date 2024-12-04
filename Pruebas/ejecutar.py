@@ -5,6 +5,7 @@ import xml.etree.ElementTree as ET
 datoAnterior = 0
 fila1 = None
 listaCircular = ListaCircular()
+filas = fila()
 
 
 def leerArchivo(entrada):
@@ -40,7 +41,7 @@ def listaBinaria(listaCircular):
     
     #while matriz.siguiente != listaCircular.inicio:
     obtenerBinaria(matriz.matriz)
-
+    compararFilas(matriz.matriz)
 
 
 
@@ -58,15 +59,41 @@ def obtenerBinaria(matriz):
                 dato.dato = 1
             dato = dato.siguiente
         fila = fila.siguiente
-   
+                              
+def compararFilas(matriz):
+    global filas
+    posicionFila = 1
+    posicionFila2 = 1 
 
-    
+    fila = matriz.inicio
+    while fila:
+        fila2 = fila.siguiente
+        while fila2:
+
+            dato = fila.dato.inicio
+            dato2 = fila2.dato.inicio
+
+            while dato and dato2:
+                if dato.dato == dato2.dato:
+                    dato = dato.siguiente
+                    dato2 = dato2.siguiente
+                    filas.agregar("iguales", posicionFila, posicionFila2)
+                    posicionFila += 1
+                    posicionFila2 += 1
+                else:
+                    print("No son iguales")
+                    dato = None
+                    dato2 = None
  
+            fila2 = fila2.siguiente
+        fila = fila.siguiente
+            
+
 
 leerArchivo("entrada_.xml")
 listaBinaria(listaCircular)
 listaCircular.imprimir_lista()
-                              
+filas.imprimir()
 
 
 

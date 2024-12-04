@@ -34,9 +34,15 @@ class fila:
     def imprimir(self):
         nodoActual = self.inicio
         while nodoActual != None:
-            print(nodoActual.dato)
+            print(nodoActual.dato, end=' ')
             nodoActual = nodoActual.siguiente
-          
+    
+    def imprimirFilas(self):
+        nodoActual = self.inicio
+        while nodoActual != None:
+            nodoActual.dato.imprimir()
+            print("")
+            nodoActual = nodoActual.siguiente
 
 
 

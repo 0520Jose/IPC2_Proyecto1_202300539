@@ -1,6 +1,6 @@
 from archivoXML import archivoXML
 from graficar import Reportes
-from ListaCircular.ListaCircular import ListaCircular
+from Pruebas.ListaCircular import ListaCircular
 class opcionesPrincipales:
     def __init__(self):
         self.archivo = archivoXML()

@@ -1,6 +1,6 @@
-from ListaCircular.Nodo import Nodo
-from Listas.Matriz import Matriz
-from Listas.Cola import Cola
+from Nodo import Nodo
+
+
 
 class ListaCircular:
     def __init__ (self, inicio = None, tamaño = 0) -> None:
@@ -201,7 +201,9 @@ class ListaCircular:
         nodoAux = self.inicio
         while True:
             print(f"Nombre: {nodoAux.nombre}")
-            nodoAux.matriz.imprimir_matriz()
+            nodoAux.matriz.imprimirFilas()
+
+
             nodoAux = nodoAux.siguiente
             if nodoAux == self.inicio:
                 break

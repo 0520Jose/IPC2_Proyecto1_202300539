@@ -1,3 +1,3 @@
-from ListaCircular.ListaCircular import ListaCircular
+from Pruebas.ListaCircular import ListaCircular
 
 lista_circular = ListaCircular()
